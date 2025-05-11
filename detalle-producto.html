@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Detalles del Producto - MUNDO PC</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: image-set("fondo.png"); }
+    .detalle-container { max-width: 800px; margin: 2em auto; background: #fff; border-radius: 10px; padding: 2em; }
+    .detalle-imagen { width: 100%; max-width: 400px; display:block; margin:auto; }
+    .especificaciones { margin: 2em 0; }
+    button { background: #1976d2; color: white; border: none; padding: 1em 2em; cursor: pointer; border-radius:5px; margin:1em 1em 0 0;}
+    .btns {text-align:center;}
+  </style>
+</head>
+<body>
+  <div class="detalle-container">
+    <h1 id="detalle-nombre"></h1>
+    <img class="detalle-imagen" id="detalle-imagen" src="" alt="">
+    <div class="especificaciones" id="detalle-caracteristicas"></div>
+    <div class="btns">
+      <button onclick="agregarAlCarritoDesdeDetalle()">Agregar al Carrito</button>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script>
+    // IndexedDB helpers
+    let db;
+    const DB_NAME = 'CoolCenterDB';
+    const DB_VERSION = 1;
+    function openDB() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
+        request.onerror = () => reject('Error abriendo la base de datos');
+        request.onsuccess = (event) => { db = event.target.result; resolve(db); };
+      });
+    }
+    // Obtener ID del producto desde la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
+    let productoDetalle = null;
+    openDB().then(db => {
+      const tx = db.transaction('productos', 'readonly');
+      const store = tx.objectStore('productos');
+      store.get(productId).onsuccess = function(e) {
+        const producto = e.target.result;
+        productoDetalle = producto;
+        if (producto) {
+          document.getElementById('detalle-nombre').textContent = producto.nombre;
+          document.getElementById('detalle-imagen').src = producto.imagen;
+          document.getElementById('detalle-caracteristicas').innerHTML = `
+            <h2>Especificaciones:</h2>
+            <ul>${producto.caracteristicas.map(c => `<li>${c}</li>`).join('')}</ul>
+            <p><b>Precio:</b> $${producto.precio}</p>
+          `;
+        }
+      };
+    });
+    function getUsuarioLogueado() {
+      return JSON.parse(localStorage.getItem('usuarioLogueado') || 'null');
+    }
+    function guardarCarrito(email, carrito) {
+      return openDB().then(db => {
+        const tx = db.transaction('carritos', 'readwrite');
+        const store = tx.objectStore('carritos');
+        store.put({ email, carrito });
+      });
+    }
+    function obtenerCarrito(email) {
+      return openDB().then(db => {
+        return new Promise((resolve) => {
+          const tx = db.transaction('carritos', 'readonly');
+          const store = tx.objectStore('carritos');
+          const request = store.get(email);
+          request.onsuccess = () => resolve(request.result ? request.result.carrito : []);
+        });
+      });
+    }
+    async function agregarAlCarritoDesdeDetalle() {
+      const usuario = getUsuarioLogueado();
+      if (!usuario) {
+        Toastify({text: "Debes iniciar sesión para agregar al carrito", duration: 2000, style: {background: "#f44336"}}).showToast();
+        return;
+      }
+      let carrito = await obtenerCarrito(usuario.email);
+      const idx = carrito.findIndex(item => item.id === productoDetalle.id);
+      if (idx !== -1) {
+        carrito[idx].cantidad += 1;
+      } else {
+        carrito.push({...productoDetalle, cantidad: 1});
+      }
+      guardarCarrito(usuario.email, carrito).then(() => {
+        Toastify({text: "Producto agregado al carrito", duration: 2000, style: {background: "#4caf50"}}).showToast();
+      });
+    }
+  </script>
+</body>
+</html>

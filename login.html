@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Mundo pc</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; }
+    main { max-width: 400px; margin: 4em auto; background: #fff; padding: 2em; border-radius: 10px; }
+    h2 { color: #1976d2; }
+    form input, form textarea { width: 98%; padding: 0.7em; margin: 0.7em 0; border-radius: 5px; border: 1px solid #ccc; }
+    form textarea { min-height: 120px; resize: vertical; font-size: 1.1em; }
+    form button { background: #1976d2; color: #fff; border: none; padding: 0.7em 2em; border-radius: 5px; cursor: pointer;}
+    form button:hover { background: #1565c0; }
+    a { color: #1976d2; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <main>
+    <h2>Inicio de Sesión</h2>
+    <form id="form-login">
+      <input id="login-email" type="email" placeholder="Correo electrónico" required>
+      <input id="login-pass" type="password" placeholder="Contraseña" required>
+      <button type="submit">Iniciar sesión</button>
+    </form>
+    <p>¿No tienes cuenta? <a href="registro.html">Regístrate</a></p>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script>
+    if (localStorage.getItem('usuarioLogueado')) window.location.href = "index.html";
+    let db;
+    const DB_NAME = 'CoolCenterDB';
+    const DB_VERSION = 1;
+    function openDB() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
+        request.onerror = () => reject('Error abriendo la base de datos');
+        request.onsuccess = (event) => { db = event.target.result; resolve(db); };
+        request.onupgradeneeded = (event) => {
+          db = event.target.result;
+          if (!db.objectStoreNames.contains('usuarios')) db.createObjectStore('usuarios', { keyPath: 'email' });
+        };
+      });
+    }
+    function buscarUsuario(email) {
+      return openDB().then(db => {
+        return new Promise((resolve) => {
+          const tx = db.transaction('usuarios', 'readonly');
+          const store = tx.objectStore('usuarios');
+          const request = store.get(email);
+          request.onsuccess = () => resolve(request.result);
+        });
+      });
+    }
+    function hashPassword(pass) { return btoa(pass); }
+    document.getElementById('form-login').onsubmit = function(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim();
+      const pass = document.getElementById('login-pass').value.trim();
+      if (!email || !pass) {
+        Toastify({text: "Todos los campos son obligatorios", duration: 2000, gravity: "bottom", position: "right", style: {background: "#f44336"}}).showToast();
+        return;
+      }
+      buscarUsuario(email).then(usuario => {
+        if (usuario && usuario.pass === hashPassword(pass)) {
+          localStorage.setItem('usuarioLogueado', JSON.stringify({ email: usuario.email, nombre: usuario.nombre }));
+          Toastify({text: "Login exitoso", duration: 2000, gravity: "bottom", position: "right", style: {background: "#4caf50"}}).showToast();
+          setTimeout(() => window.location.href = "index.html", 2000);
+        } else {
+          Toastify({text: "Usuario o contraseña incorrectos", duration: 2000, gravity: "bottom", position: "right", style: {background: "#f44336"}}).showToast();
+        }
+      });
+    };
+  </script>
+</body>
+</html>
