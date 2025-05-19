@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "nombre": "ASUS ZENBOOK 14.5",
+    "precio": 32.292,
+    "caracteristicas": [
+      "Intel i7",
+      "16GB RAM",
+      "512GB SSD",
+      "Pantalla 14.5\"",
+      "Windows 11",
+      "Batería 8h",
+      "Peso 1.5kg",
+      "Color Gris"
+    ],
+    "image": "img/carroImages/image1.png"
+  },
+  {
+    "id": 2,
+    "nombre": "AURICULARES APPLE BEATS SOLO HD",
+    "precio": 4.0,
+    "caracteristicas": [
+      "Audio estéreo HD",
+      "Conexión Bluetooth",
+      "Micrófono integrado",
+      "Diseño plegable",
+      "Cancelación de ruido",
+      "Autonomía 12h",
+      "Carga rápida",
+      "Color Negro"
+    ],
+    "image": "img/carroImages/image2.png"
+  },
+  {
+    "id": 3,
+    "nombre": "TECLADO GAMER RAZER QWERTY",
+    "precio": 2.28,
+    "caracteristicas": [
+      "Retroiluminación RGB",
+      "Anti-Ghosting",
+      "Switches mecánicos",
+      "Diseño ergonómico",
+      "Reposamuñecas desmontable",
+      "Cable USB trenzado",
+      "Compatible con Windows y macOS",
+      "Color Negro"
+    ],
+    "image": "img/carroImages/image3.png"
+  }
+]
