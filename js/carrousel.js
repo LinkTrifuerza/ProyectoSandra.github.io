@@ -21,3 +21,4 @@ btnLeft.addEventListener("click", () => {
 });
 
 window.addEventListener("resize", updateCarousel);
+console.log("funcionado");
