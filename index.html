@@ -19,20 +19,45 @@
         flex-direction: column;
         min-height: 100vh;
       }
-      main {
-        max-width: 900px;
-        margin: 2em auto;
-        background: #fff;
-        padding: 2em;
-        border-radius: 10px;
-        flex: 1;
-      }
       header {
-        background: #1976d2;
-        color: #fff;
-        padding: 1em 0;
-        text-align: center;
+        width: 100%;
+        background-color: #262b7e;
+        padding: 12px 0 12px 20px;
+        box-sizing: border-box;
         position: relative;
+      }
+      .left-header {
+        display: flex;
+        align-items: center;
+        margin-right: auto;
+      }
+      .btn-login {
+        display: inline-block;
+        padding: 8px 16px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+      }
+      .btn-login:hover {
+        background-color: #0056b3;
+      }
+      /* Se reestructura el logo para que sea inline-flex, de forma que la imagen aparezca a la izquierda del texto */
+.link__to__home__logo {
+  display: inline-flex;
+  flex-direction: row; /* Fuerza que el orden sea: imagen, luego texto */
+  align-items: center;
+  gap: 0.5em; /* Espacio entre elementos */
+}
+
+.logo_img {
+  margin-right: 0.5em; /* Opcional, refuerza el espacio a la derecha de la imagen */
+}
+
+      .link__to__home__logo h1 {
+        margin: 0;
       }
       nav {
         display: flex;
@@ -78,6 +103,52 @@
       #logout-btn:hover {
         background: #b71c1c;
       }
+      main {
+        max-width: 900px;
+        margin: 2em auto;
+        background: #fff;
+        padding: 2em;
+        border-radius: 10px;
+        flex: 1;
+      }
+      /* Sección de inventario (productos) */
+      #inventario-section {
+        display: block;
+      }
+      .section__producto__carrosel__ {
+        margin-bottom: 2em;
+      }
+      .h2__carrosel__ {
+        text-align: center;
+      }
+      .carrousel__container {
+        position: relative;
+        overflow: hidden;
+      }
+      .carrousel__track {
+        display: flex;
+        transition: transform 0.3s ease;
+      }
+      .carrousel__item {
+        min-width: 100%;
+      }
+      .carrousel__btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        border: none;
+        padding: 0.5em;
+        cursor: pointer;
+        font-size: 1.5em;
+      }
+      .carrousel__btn.left {
+        left: 0.5em;
+      }
+      .carrousel__btn.right {
+        right: 0.5em;
+      }
       .producto {
         border: 1px solid #ddd;
         border-radius: 5px;
@@ -107,6 +178,7 @@
         grid-template-columns: repeat(3, 1fr);
         gap: 5em;
       }
+      /* Sección Carrito */
       #carrito {
         display: none;
       }
@@ -134,6 +206,7 @@
         border-radius: 5px;
         cursor: pointer;
       }
+      /* Modal de pago */
       #modal-pago {
         display: none;
         position: fixed;
@@ -178,13 +251,20 @@
   </head>
   <body>
     <header class="header__mundo__pc">
-      <a href="/" class="link__to__home__logo">
-        <h1>MUNDO PC</h1>
-        <img src="assets/icon/logo.jpg" alt="mundo-pc" class="logo_img" />
-      </a>
+      <div class="left-header">
+        <a href="login.html" class="btn-login">Logeate o Regístrate</a>
+      </div>
+      <!-- Se reestructura el logo para colocar la imagen a la izquierda del texto -->
+   <a
+  href="#"
+  class="link__to__home__logo"
+  onclick="mostrarSeccion('inventario-section'); mostrarProductos(); return false;"
+>
+  <img src="assets/icon/logo.jpg" alt="mundo-pc" class="logo_img" style="margin-right: 0.5em;" />
+  <h1 style="margin: 0;">MUNDO PC</h1>
+</a>
       <nav>
         <a href="#" id="nav-inicio" class="active">Inicio</a>
-        <a href="#" id="nav-inventario">Ver inventario</a>
         <a href="#" id="nav-carrito" style="position: relative">
           Carrito (<span id="carrito-cantidad">0</span>)
         </a>
@@ -192,22 +272,10 @@
       <span id="usuario-info"></span>
       <button id="logout-btn">Cerrar sesión</button>
     </header>
-    <main>
-      <section id="inicio-section">
-        <h2>Bienvenido a MUNDO PC</h2>
-        <p>
-          Explora nuestro catálogo de productos y encuentra lo que necesitas.
-          <br />
-          Puedes <b>registrarte</b> o <b>iniciar sesión</b> para una experiencia
-          completa.
-        </p>
-        <div style="margin-top: 2em">
-          <a href="registro.html" style="margin-right: 1em">Registrarse</a>
-          <a href="login.html">Iniciar sesión</a>
-        </div>
-      </section>
 
-      <section id="inventario-section" style="display: none">
+    <main>
+      <!-- Sección de inventario: muestra el carrusel, buscador y listado de productos -->
+      <section id="inventario-section">
         <section class="section__producto__carrosel__">
           <h2 class="h2__carrosel__">PRODUCTOS NUEVOS CON DESCUENTOS</h2>
           <div class="carrousel__container">
@@ -244,7 +312,8 @@
         <div id="productos-container"></div>
       </section>
 
-      <section id="carrito" style="display: none">
+      <!-- Sección Carrito de Compras -->
+      <section id="carrito">
         <h2>
           Carrito de Compras
           <button class="cerrar-carrito" onclick="cerrarCarrito()">X</button>
@@ -258,6 +327,8 @@
         </button>
       </section>
     </main>
+
+    <!-- Modal de pago -->
     <div id="modal-pago">
       <div class="modal-content">
         <h3>Pagar con Tarjeta</h3>
@@ -265,18 +336,8 @@
           <input type="text" placeholder="Nombre en la Tarjeta" required />
           <input type="number" placeholder="Número de Tarjeta" required />
           <div style="display: flex; gap: 1em">
-            <input
-              type="text"
-              placeholder="MM/AA"
-              required
-              style="width: 50%"
-            />
-            <input
-              type="number"
-              placeholder="CVV"
-              required
-              style="width: 50%"
-            />
+            <input type="text" placeholder="MM/AA" required style="width: 50%" />
+            <input type="number" placeholder="CVV" required style="width: 50%" />
           </div>
           <div style="margin-top: 1em; text-align: right">
             <button type="button" onclick="cerrarModalPago()">Cancelar</button>
@@ -285,10 +346,11 @@
         </form>
       </div>
     </div>
+
     <footer>© 2025 MUNDO PC</footer>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
-      // ========== indexeddb.js ==========
+      // ========== IndexedDB ==========
       let db;
       const DB_NAME = "MundoPcDB";
       const DB_VERSION = 1;
@@ -367,7 +429,8 @@
           });
         });
       }
-      // ========== productos.js ==========
+      
+      // ========== Productos ==========
       const productosEjemplo = [
         {
           id: "1",
@@ -382,8 +445,8 @@
             "Windows 11",
             "Batería 8h",
             "Peso 1.5kg",
-            "Color Gris",
-          ],
+            "Color Gris"
+          ]
         },
         {
           id: "2",
@@ -398,8 +461,8 @@
             'Pantalla 6.5"',
             "Batería 4000mAh",
             "5G",
-            "Color Negro",
-          ],
+            "Color Negro"
+          ]
         },
         {
           id: "3",
@@ -414,8 +477,8 @@
             "Batería 6000mAh",
             "WiFi",
             "Bluetooth",
-            "Color Plata",
-          ],
+            "Color Plata"
+          ]
         },
         {
           id: "4",
@@ -430,8 +493,8 @@
             "Almohadillas suaves",
             "Carga rápida",
             "Plegables",
-            "Color Negro",
-          ],
+            "Color Negro"
+          ]
         },
         {
           id: "5",
@@ -446,8 +509,8 @@
             "Altavoces integrados",
             "Ajuste inclinación",
             "Bajo consumo",
-            "Color Negro",
-          ],
+            "Color Negro"
+          ]
         },
         {
           id: "6",
@@ -462,8 +525,8 @@
             "Teclas multimedia",
             "Reposamuñecas",
             "Compacto",
-            "Color Negro",
-          ],
+            "Color Negro"
+          ]
         },
         {
           id: "7",
@@ -478,8 +541,8 @@
             "Cable trenzado",
             "Ergonómico",
             "Peso ajustable",
-            "Color Negro",
-          ],
+            "Color Negro"
+          ]
         },
         {
           id: "8",
@@ -494,8 +557,8 @@
             "A4",
             "Impresión móvil",
             "Pantalla LCD",
-            "Color Blanco",
-          ],
+            "Color Blanco"
+          ]
         },
         {
           id: "9",
@@ -510,8 +573,8 @@
             "Notificaciones",
             "Batería 7 días",
             "Correa silicona",
-            "Color Negro",
-          ],
+            "Color Negro"
+          ]
         },
         {
           id: "10",
@@ -526,8 +589,8 @@
             "Resistente a golpes",
             "Ligero",
             "Bajo consumo",
-            "Color Plata",
-          ],
+            "Color Plata"
+          ]
         },
         {
           id: "11",
@@ -542,8 +605,8 @@
             "Resistente",
             "Ligero",
             "Compatible Mac/Win",
-            "Color Negro",
-          ],
+            "Color Negro"
+          ]
         },
         {
           id: "12",
@@ -558,8 +621,8 @@
             "Plug & Play",
             "Enfoque automático",
             "Privacidad",
-            "Color Negro",
-          ],
+            "Color Negro"
+          ]
         },
         {
           id: "13",
@@ -574,8 +637,8 @@
             "Manos libres",
             "Portátil",
             "FM",
-            "Color Azul",
-          ],
+            "Color Azul"
+          ]
         },
         {
           id: "14",
@@ -590,8 +653,8 @@
             "Corrección trapezoidal",
             "Remoto",
             "Compacto",
-            "Color Blanco",
-          ],
+            "Color Blanco"
+          ]
         },
         {
           id: "15",
@@ -606,8 +669,8 @@
             "Puerto Gigabit",
             "App móvil",
             "Seguridad WPA3",
-            "Color Negro",
-          ],
+            "Color Negro"
+          ]
         },
         {
           id: "16",
@@ -622,8 +685,8 @@
             "Base metálica",
             "Ruedas silenciosas",
             "Fácil montaje",
-            "Color Rojo",
-          ],
+            "Color Rojo"
+          ]
         },
         {
           id: "17",
@@ -638,8 +701,8 @@
             "Cables mallados",
             "Compacta",
             "Ventilador 120mm",
-            "Color Negro",
-          ],
+            "Color Negro"
+          ]
         },
         {
           id: "18",
@@ -654,8 +717,8 @@
             "Dual Channel",
             "Bajo voltaje",
             "Compatible Intel/AMD",
-            "Color Negro",
-          ],
+            "Color Negro"
+          ]
         },
         {
           id: "19",
@@ -670,8 +733,8 @@
             "Alta velocidad",
             "Resistente",
             "Compatibilidad amplia",
-            "Color Negro",
-          ],
+            "Color Negro"
+          ]
         },
         {
           id: "20",
@@ -686,16 +749,16 @@
             "Conectores dorados",
             "Alta velocidad",
             "Flexible",
-            "Color Negro",
-          ],
-        },
+            "Color Negro"
+          ]
+        }
       ];
       openDB().then(() => {
         obtenerProductos().then((p) => {
           if (!p || p.length === 0) guardarProductosIniciales(productosEjemplo);
         });
       });
-
+      
       // ========== Manejo de sesión ==========
       function getUsuarioLogueado() {
         return JSON.parse(localStorage.getItem("usuarioLogueado") || "null");
@@ -704,14 +767,18 @@
         const usuario = getUsuarioLogueado();
         const info = document.getElementById("usuario-info");
         const logoutBtn = document.getElementById("logout-btn");
+        const loginBtnContainer = document.querySelector(".left-header");
         if (usuario) {
           info.textContent = `Bienvenido, ${usuario.nombre}`;
           logoutBtn.style.display = "inline-block";
+          loginBtnContainer.style.display = "none";
         } else {
           info.textContent = "";
           logoutBtn.style.display = "none";
+          loginBtnContainer.style.display = "block";
         }
       }
+      // MODIFICADO: Al cerrar sesión se elimina el usuario, se muestra un Toast y luego se actualiza la vista a inventario mostrando el botón de login.
       document.getElementById("logout-btn").onclick = function () {
         localStorage.removeItem("usuarioLogueado");
         Toastify({
@@ -721,9 +788,13 @@
           position: "right",
           style: { background: "#1976d2" },
         }).showToast();
-        setTimeout(() => (window.location.href = "login.html"), 1200);
+        setTimeout(() => {
+          mostrarUsuarioLogueado();
+          mostrarSeccion("inventario-section");
+          mostrarProductos();
+        }, 1200);
       };
-
+      
       // ========== Inventario ==========
       function mostrarProductos(filtrados) {
         obtenerProductos().then((productos) => {
@@ -738,20 +809,17 @@
             <h3>${p.nombre}</h3>
             <p><b>Precio:</b> $${p.precio}</p>
             <button onclick="verDetalles('${p.id}')">Ver detalles</button>
-            <button onclick="agregarAlCarrito('${
-              p.id
-            }')">Agregar al carrito</button>
+            <button onclick="agregarAlCarrito('${p.id}')">Agregar al carrito</button>
           </div>
         `
             )
             .join("");
         });
       }
-
       window.verDetalles = function (id) {
         window.location.href = `detalle-producto.html?id=${id}`;
       };
-
+      
       // ========== Carrito por usuario ==========
       let carrito = [];
       async function cargarCarrito() {
@@ -860,6 +928,7 @@
       function cerrarCarrito() {
         mostrarSeccion("inventario-section");
       }
+      
       // Modal de pago
       function cerrarModalPago() {
         document.getElementById("modal-pago").style.display = "none";
@@ -888,32 +957,26 @@
           cerrarModalPago();
         });
       };
-
+      
       // ========== Navegación ==========
       function mostrarSeccion(id) {
-        ["inicio-section", "inventario-section", "carrito"].forEach((sec) => {
+        ["inventario-section", "carrito"].forEach((sec) => {
           document.getElementById(sec).style.display =
             sec === id ? "block" : "none";
         });
-        document
-          .querySelectorAll("nav a")
-          .forEach((a) => a.classList.remove("active"));
-        if (id === "inicio-section")
-          document.getElementById("nav-inicio").classList.add("active");
+        document.querySelectorAll("nav a").forEach((a) => a.classList.remove("active"));
         if (id === "inventario-section")
-          document.getElementById("nav-inventario").classList.add("active");
+          document.getElementById("nav-inicio").classList.add("active");
         if (id === "carrito")
           document.getElementById("nav-carrito").classList.add("active");
       }
       document.getElementById("nav-inicio").onclick = function (e) {
         e.preventDefault();
-        mostrarSeccion("inicio-section");
-      };
-      document.getElementById("nav-inventario").onclick = function (e) {
-        e.preventDefault();
         mostrarSeccion("inventario-section");
         mostrarProductos();
       };
+      
+      // Buscador de productos
       document.getElementById("buscar-producto").oninput = function () {
         buscarProductos(this.value);
       };
@@ -925,11 +988,19 @@
           mostrarProductos(filtrados);
         });
       }
-
+      
       // ========== Inicialización ==========
       mostrarUsuarioLogueado();
       cargarCarrito();
+      // Mostramos por defecto la sección de inventario y cargamos los productos
+      mostrarSeccion("inventario-section");
       mostrarProductos();
+      
+      // Al volver a la página (por ejemplo, usando el botón "atrás"), se refresca el contenido de inventario.
+      window.addEventListener("pageshow", () => {
+        mostrarSeccion("inventario-section");
+        mostrarProductos();
+      });
     </script>
   </body>
 </html>
