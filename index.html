@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="styles/css/styles.css" />
     <script type="module" src="js/carrousel.js"></script>
     <style>
+      /* Global */
       body {
         font-family: Arial, sans-serif;
         margin: 0;
@@ -44,21 +45,20 @@
       .btn-login:hover {
         background-color: #0056b3;
       }
-      /* Se reestructura el logo para que sea inline-flex, de forma que la imagen aparezca a la izquierda del texto */
-.link__to__home__logo {
-  display: inline-flex;
-  flex-direction: row; /* Fuerza que el orden sea: imagen, luego texto */
-  align-items: center;
-  gap: 0.5em; /* Espacio entre elementos */
-}
-
-.logo_img {
-  margin-right: 0.5em; /* Opcional, refuerza el espacio a la derecha de la imagen */
-}
-
+      /* Logo */
+      .link__to__home__logo {
+        display: inline-flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5em;
+      }
+      .logo_img {
+        margin-right: 0.5em;
+      }
       .link__to__home__logo h1 {
         margin: 0;
       }
+      /* Navegación */
       nav {
         display: flex;
         justify-content: center;
@@ -111,7 +111,7 @@
         border-radius: 10px;
         flex: 1;
       }
-      /* Sección de inventario (productos) */
+      /* Sección Inventario */
       #inventario-section {
         display: block;
       }
@@ -227,6 +227,20 @@
         max-width: 350px;
         width: 90%;
       }
+      /* Sección Sobre Nosotros */
+      #sobre-nosotros {
+        display: none;
+      }
+      #sobre-nosotros h2 {
+        text-align: center;
+        color: #1976d2;
+      }
+      #sobre-nosotros p {
+        font-size: 1.1em;
+        color: #444;
+        text-align: justify;
+        margin: 1em 0;
+      }
       footer {
         margin-top: auto;
         text-align: center;
@@ -254,27 +268,29 @@
       <div class="left-header">
         <a href="login.html" class="btn-login">Logeate o Regístrate</a>
       </div>
-      <!-- Se reestructura el logo para colocar la imagen a la izquierda del texto -->
-   <a
-  href="#"
-  class="link__to__home__logo"
-  onclick="mostrarSeccion('inventario-section'); mostrarProductos(); return false;"
->
-  <img src="assets/icon/logo.jpg" alt="mundo-pc" class="logo_img" style="margin-right: 0.5em;" />
-  <h1 style="margin: 0;">MUNDO PC</h1>
-</a>
+      <!-- Logo con imagen a la izquierda del texto -->
+      <a
+        href="#"
+        class="link__to__home__logo"
+        onclick="mostrarSeccion('inventario-section'); mostrarProductos(); return false;"
+      >
+        <img src="assets/icon/logo.jpg" alt="Mundo PC" class="logo_img" />
+        <h1 style="margin: 0;">MUNDO PC</h1>
+      </a>
+      <!-- Navegación -->
       <nav>
         <a href="#" id="nav-inicio" class="active">Inicio</a>
         <a href="#" id="nav-carrito" style="position: relative">
           Carrito (<span id="carrito-cantidad">0</span>)
         </a>
+        <a href="#" id="nav-nosotros">Sobre Nosotros</a>
       </nav>
       <span id="usuario-info"></span>
       <button id="logout-btn">Cerrar sesión</button>
     </header>
 
     <main>
-      <!-- Sección de inventario: muestra el carrusel, buscador y listado de productos -->
+      <!-- Sección Inventario -->
       <section id="inventario-section">
         <section class="section__producto__carrosel__">
           <h2 class="h2__carrosel__">PRODUCTOS NUEVOS CON DESCUENTOS</h2>
@@ -301,7 +317,7 @@
           </div>
         </section>
 
-        <h2>Inventario</h2>
+        <h2>Busca productos!</h2>
         <input
           type="text"
           id="buscar-producto"
@@ -326,6 +342,22 @@
           Pagar
         </button>
       </section>
+
+      <!-- Sección Sobre Nosotros -->
+      <section id="sobre-nosotros">
+        <h2>Sobre Nosotros</h2>
+        <p>
+          Bienvenidos a <strong>Mundo PC</strong>, tu mejor opción en tecnología y computadoras.
+          Somos una empresa dedicada a la venta de productos relacionados con computadoras, ofreciendo desde laptops y smartphones hasta componentes y accesorios de última generación.
+        </p>
+        <p>
+          Nuestra misión es proporcionar soluciones tecnológicas innovadoras y de alta calidad que se adapten a las necesidades de profesionales, gamers y entusiastas de la informática.
+          Con años de experiencia en el mercado, nos hemos consolidado como líderes en el sector, comprometidos con la excelencia y la satisfacción de nuestros clientes.
+        </p>
+        <p>
+          En Mundo PC, creemos que la tecnología impulsa el progreso y nuestro compromiso es estar siempre a la vanguardia para ofrecerte lo mejor del mundo digital.
+        </p>
+      </section>
     </main>
 
     <!-- Modal de pago -->
@@ -348,15 +380,16 @@
     </div>
 
     <footer style="width: 100%; background-color: #262b7e; color: white; padding: 12px 20px; box-sizing: border-box; text-align: center; position: relative;">
-  <p>&copy; 2025 Mundo PC. Todos los derechos reservados.</p>
-  <p>
-    <a href="mailto:contacto@mundopc.com" style="color: white; text-decoration: none; margin: 0 10px;">contacto@mundopc.com</a>
-    <span style="margin: 0 10px;">|</span>
-    <a href="https://facebook.com/mundopc" target="_blank" style="color: white; text-decoration: none; margin: 0 10px;">Facebook</a>
-    <a href="https://twitter.com/mundopc" target="_blank" style="color: white; text-decoration: none; margin: 0 10px;">Twitter</a>
-    <a href="https://instagram.com/mundopc" target="_blank" style="color: white; text-decoration: none; margin: 0 10px;">Instagram</a>
-  </p>
-</footer>
+      <p>&copy; 2025 Mundo PC. Todos los derechos reservados.</p>
+      <p>
+        <a href="mailto:contacto@mundopc.com" style="color: white; text-decoration: none; margin: 0 10px;">contacto@mundopc.com</a>
+        <span style="margin: 0 10px;">|</span>
+        <a href="https://facebook.com/mundopc" target="_blank" style="color: white; text-decoration: none; margin: 0 10px;">Facebook</a>
+        <a href="https://twitter.com/mundopc" target="_blank" style="color: white; text-decoration: none; margin: 0 10px;">Twitter</a>
+        <a href="https://instagram.com/mundopc" target="_blank" style="color: white; text-decoration: none; margin: 0 10px;">Instagram</a>
+      </p>
+    </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
       // ========== IndexedDB ==========
@@ -762,6 +795,8 @@
           ]
         }
       ];
+      
+      // Inicialización de productos en la base de datos, si aún no han sido guardados
       openDB().then(() => {
         obtenerProductos().then((p) => {
           if (!p || p.length === 0) guardarProductosIniciales(productosEjemplo);
@@ -787,7 +822,7 @@
           loginBtnContainer.style.display = "block";
         }
       }
-      // MODIFICADO: Al cerrar sesión se elimina el usuario, se muestra un Toast y luego se actualiza la vista a inventario mostrando el botón de login.
+      // Al cerrar sesión se elimina el usuario, se muestra un Toast y se actualiza la vista a inventario
       document.getElementById("logout-btn").onclick = function () {
         localStorage.removeItem("usuarioLogueado");
         Toastify({
@@ -969,16 +1004,19 @@
       
       // ========== Navegación ==========
       function mostrarSeccion(id) {
-        ["inventario-section", "carrito"].forEach((sec) => {
+        ["inventario-section", "carrito", "sobre-nosotros"].forEach((sec) => {
           document.getElementById(sec).style.display =
             sec === id ? "block" : "none";
         });
         document.querySelectorAll("nav a").forEach((a) => a.classList.remove("active"));
-        if (id === "inventario-section")
-          document.getElementById("nav-inicio").classList.add("active");
-        if (id === "carrito")
-          document.getElementById("nav-carrito").classList.add("active");
+        if (id === "inventario-section") document.getElementById("nav-inicio").classList.add("active");
+        if (id === "carrito") document.getElementById("nav-carrito").classList.add("active");
+        if (id === "sobre-nosotros") document.getElementById("nav-nosotros").classList.add("active");
       }
+      document.getElementById("nav-nosotros").onclick = function (e) {
+        e.preventDefault();
+        mostrarSeccion("sobre-nosotros");
+      };
       document.getElementById("nav-inicio").onclick = function (e) {
         e.preventDefault();
         mostrarSeccion("inventario-section");
@@ -1005,7 +1043,7 @@
       mostrarSeccion("inventario-section");
       mostrarProductos();
       
-      // Al volver a la página (por ejemplo, usando el botón "atrás"), se refresca el contenido de inventario.
+      // Al volver a la página (por ejemplo, usando el botón "atrás"), se refresca el contenido del inventario.
       window.addEventListener("pageshow", () => {
         mostrarSeccion("inventario-section");
         mostrarProductos();
@@ -1013,3 +1051,4 @@
     </script>
   </body>
 </html>
+
